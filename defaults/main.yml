@@ -1,0 +1,8 @@
+---
+# defaults file for sshknownhosts
+dest: /etc/ssh/ssh_known_hosts
+state: present
+enctype: rsa
+port: 22
+keyscan: ssh-keyscan
+aliases:

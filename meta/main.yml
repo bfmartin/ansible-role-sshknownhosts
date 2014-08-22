@@ -1,0 +1,17 @@
+---
+galaxy_info:
+  author: Byron F. Martin
+  description: This is an ansible role that manages the SSH known hosts file usually located at /etc/ssh/ssh_known_hosts or ~user/.ssh/known_hosts.
+  license: BSD
+  min_ansible_version: 1.1
+  platforms:
+  - name: GenericBSD
+    versions:
+    - all
+  - name: GenericLinux
+    versions:
+    - all
+  categories:
+  - networking
+  - system
+dependencies: []
