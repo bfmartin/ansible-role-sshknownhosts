@@ -1,4 +1,4 @@
 ---
 # Where the rubber meets the road. stuff gets done
-- name: Add localhost to ssh_known_hosts file
+- name: Manage ssh_known_hosts file
   action: sshknownhosts host={{ host }} state={{ state }} dest={{ dest }} enctype={{ enctype }} port={{ port }} keyscan={{ keyscan }} aliases={{ aliases }}
