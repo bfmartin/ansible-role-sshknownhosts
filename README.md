@@ -53,7 +53,10 @@ Example Playbook
 ---
 - hosts: all
   roles:
-    - { role: sshknownhostsrole, host: server1, aliases: "gitserver" }
+    - { role: ssh_known_hosts, host: server1.mydomain.net, aliases: "gitserver" }
+
+
+
 
 
 License
