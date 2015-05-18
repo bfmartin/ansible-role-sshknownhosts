@@ -1,8 +1,20 @@
 ---
 # defaults file for sshknownhosts
-dest: /etc/ssh/ssh_known_hosts
-state: present
-enctype: rsa
-port: 22
-keyscan: ssh-keyscan
-aliases:
+ssh_known_hosts_path: /etc/ssh/ssh_known_hosts
+ssh_known_hosts_state: present
+ssh_known_hosts_enctype: rsa
+ssh_known_hosts_port: 22
+ssh_known_hosts_keyscan: ssh-keyscan
+
+#ssh_known_hosts:
+#  - name: example.com
+#    state: present
+#    dest: /etc/ssh/ssh_known_hosts
+#    enctype: rsa
+#    port: 22
+#    keyscan: ssh-keyscan
+#    aliases:
+#      - www.example.com
+#      - www2.example.com
+
+ssh_known_hosts: []
