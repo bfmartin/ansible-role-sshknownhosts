@@ -2,11 +2,11 @@
 # Where the rubber meets the road. stuff gets done
 - name: Manage ssh_known_hosts file
   sshknownhosts:
-    host: item.name
-    aliases: item.aliases | join(",")
-    state: item.state | default(ssh_known_hosts_state)
-    dest: item.path | default(ssh_known_hosts_path)
-    enctype: item.enctype | default(ssh_known_hosts_enctype)
-    port: item.port | default(ssh_known_hosts_port)
-    keyscan: item.keyscan | default(ssh_known_hosts_keyscan)
+    host: "{{ item.name }}"
+    aliases: "{{ item.aliases|join(',') }}"
+    state: "{{ item.state|default(ssh_known_hosts_state) }}"
+    dest: "{{ item.path|default(ssh_known_hosts_path) }}"
+    enctype: "{{ item.enctype|default(ssh_known_hosts_enctype) }}"
+    port: "{{ item.port|default(ssh_known_hosts_port) }}"
+    keyscan: "{{ item.keyscan|default(ssh_known_hosts_keyscan) }}"
   with_items: ssh_known_hosts
