@@ -28,19 +28,30 @@ Role Variables
 
 This role uses the following variables. and their default values:
 
-host: The remote host to scan. An alias for "host" is "name". This parameter is required. If used with state=present, the host is added or updated with the current key. If used with state=absent, the line containing this hostname is removed.
+ssh_known_hosts_path: The destination file to write to.  The default is /etc/ssh/ssh_known_hosts and ~user/.ssh/known_hosts is a good alternative.
 
-dest: The destination file to write to.  The default is /etc/ssh/ssh_known_hosts and ~user/.ssh/known_hosts is a good alternative.
+ssh_known_hosts_state: present or absent. the default is present
 
-state: present or absent. the default is present
+ssh_known_hosts_enctype: The public key encoding type to scan for. Choices are rsa, dsa or ecdsa. Default is rsa.
 
-enctype: The public key encoding type to scan for. Choices are rsa, dsa or ecdsa. Default is rsa.
-port: The port to connect to when scanning the remote host. Default is 22.
+ssh_known_hosts_port: The port to connect to when scanning the remote host. Default is 22.
 
-keyscan: The program to use to scan with. The default is ssh-keyscan in the current path.
+ssh_known_hosts_keyscan: The program to use to scan with. The default is ssh-keyscan in the current path.
 
-aliases: Aliases for the host name to add to the known hosts file. The default is "".
+ssh_known_hosts: List of dictionaries the host and its attributes to scan:
 
+```
+ssh_known_hosts:
+  - name: example.com
+    state: present
+    dest: /etc/ssh/ssh_known_hosts
+    enctype: rsa
+    port: 22
+    keyscan: ssh-keyscan
+    aliases:
+      - www.example.com
+      - www2.example.com
+```
 
 Dependencies
 ------------
@@ -51,12 +62,22 @@ Example Playbook
 -------------------------
 
 ---
+```
 - hosts: all
+  vars:
+    ssh_known_hosts:
+      - name: example.com
+        state: present
+        dest: /etc/ssh/ssh_known_hosts
+        enctype: rsa
+        port: 22
+        keyscan: ssh-keyscan
+        aliases:
+          - www.example.com
+          - www2.example.com
   roles:
-    - { role: ssh_known_hosts, host: server1.mydomain.net, aliases: "gitserver" }
-
-
-
+    - role: sshknownhosts
+```
 
 
 License
