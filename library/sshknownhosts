@@ -106,10 +106,13 @@ def read_known_hosts(dest):
 
 # locate a host in the known hosts array.
 # return the position if found, or -1 if not found
-def find_host(lines, host):
-    # look for the hostname at the beginning of a line, followed by a
-    # space character or a comma
-    mre = re.compile(r"^" + host + '[ ,]')
+def find_host(lines, host, enctype):
+
+    enc_lookup=dict(dsa='ssh-dss', rsa='ssh-rsa', ecdsa='ecdsa-sha2-nistp256')
+
+    # look for the hostname at the beginning of a line, followed by a space
+    # character or a comma, then its encryption type with a trailing space
+    mre = re.compile(r"^" + host + '[ ,]+.*' + enc_lookup[enctype] + ' ')
 
     found = -1
     for lineno, cur_line in enumerate(lines):
@@ -157,7 +160,7 @@ def present(module, dest, host, keyscan, enctype, port, aliases):
     changed = False
     msg = ""
     lines = read_known_hosts(dest)
-    found = find_host(lines, host)
+    found = find_host(lines, host, enctype)
     rc, key = scan_key(module, host, keyscan, enctype, port)
 
     if rc == 0:
