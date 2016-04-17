@@ -112,7 +112,7 @@ def find_host(lines, host, enctype):
 
     # look for the hostname at the beginning of a line, followed by a space
     # character or a comma, then its encryption type with a trailing space
-    mre = re.compile(r"^" + host + '[ ,]+.*' + enc_lookup[enctype] + ' ')
+    mre = re.compile("^\[{0}]:\d+.*? {1} ".format(host, enc_lookup[enctype]))
 
     found = -1
     for lineno, cur_line in enumerate(lines):
