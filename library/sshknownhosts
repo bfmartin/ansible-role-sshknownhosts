@@ -43,7 +43,7 @@ options:
       - Whether the host should be there or not.
   enctype:
     required: false
-    choices: [ecdsa, rsa, dsa]
+    choices: [ed25519, ecdsa, rsa, dsa]
     default: "rsa"
     description:
       - The type of public key to scan for.
@@ -108,7 +108,7 @@ def read_known_hosts(dest):
 # return the position if found, or -1 if not found
 def find_host(lines, host, enctype):
 
-    enc_lookup=dict(dsa='ssh-dss', rsa='ssh-rsa', ecdsa='ecdsa-sha2-nistp256')
+    enc_lookup=dict(dsa='ssh-dss', rsa='ssh-rsa', ecdsa='ecdsa-sha2-nistp256', ed25519='ssh-ed25519')
 
     # look for the hostname at the beginning of a line, followed by a space
     # character or a comma, then its encryption type with a trailing space
@@ -201,7 +201,7 @@ def main():
         argument_spec=dict(
             host=dict(required=True, aliases=['name']),
             dest=dict(default='/etc/ssh/ssh_known_hosts'),
-            enctype=dict(default='rsa', choices=['ecdsa', 'rsa', 'dsa']),
+            enctype=dict(default='rsa', choices=['ed25519', 'ecdsa', 'rsa', 'dsa']),
             keyscan=dict(default='ssh-keyscan'),
             port=dict(default='22'),
             state=dict(default='present', choices=['absent', 'present']),

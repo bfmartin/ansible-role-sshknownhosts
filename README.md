@@ -32,7 +32,7 @@ ssh_known_hosts_path: The destination file to write to.  The default is /etc/ssh
 
 ssh_known_hosts_state: present or absent. the default is present
 
-ssh_known_hosts_enctype: The public key encoding type to scan for. Choices are rsa, dsa or ecdsa. Default is rsa.
+ssh_known_hosts_enctype: The public key encoding type to scan for. Choices are rsa, dsa, ecdsa or ed25519. Default is rsa.
 
 ssh_known_hosts_port: The port to connect to when scanning the remote host. Default is 22.
 
@@ -59,7 +59,7 @@ Dependencies
 None.
 
 Example Playbook
--------------------------
+----------------
 
 ---
 ```
