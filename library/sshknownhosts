@@ -106,14 +106,33 @@ def read_known_hosts(dest):
 
 # locate a host in the known hosts array.
 # return the position if found, or -1 if not found
-def find_host(lines, host, enctype):
-
-    enc_lookup=dict(dsa='ssh-dss', rsa='ssh-rsa', ecdsa='ecdsa-sha2-nistp256', ed25519='ssh-ed25519')
-
-    # look for the hostname at the beginning of a line, followed by a space
-    # character or a comma, then its encryption type with a trailing space
-    mre = re.compile(r"^" + host + '[ ,]+.*' + enc_lookup[enctype] + ' ')
-
+def find_host(lines, host, port, enctype=None):
+    
+    enc_lookup=dict(dsa='ssh-dss', rsa='ssh-rsa', ecdsa='ecdsa-sha2-nistp256')
+    
+    if port == "22":
+        # if enctype is not defined search for any possible encryption type
+        if enctype:
+            # when the standard port 22 is supplied the pattern to look for is
+            # following:
+            # host enctype ...
+            # or:
+            # host,alias_1,alias_2,...,alias_n enctype ...
+            mre = re.compile("^{0}[ ,]+.*? {1} ".format(host, enc_lookup[enctype]))
+        else:
+            mre = re.compile("^{0}[ ,]+.*? (({1})) ".format(host, ')|('.join(enc_lookup.values())))
+    else:
+        # if enctype is not defined search for any possible encryption type
+        if enctype:
+            # when a port other than the standard port 22 is supplied then following
+            # pattern is the one to look for:
+            # [host]:port enctype ...
+            # or:
+            # [host]:port,alias_1,alias_2,...,alias_n enctype ...
+            mre = re.compile("^\[{0}\]\:{1}[ ,]+.*? {2} ".format(host, port, enc_lookup[enctype]))
+        else:
+            mre = re.compile("^\[{0}\]\:{1}[ ,]+.*? (({2})) ".format(host, port, ')|('.join(enc_lookup.values())))
+    
     found = -1
     for lineno, cur_line in enumerate(lines):
         if mre.search(cur_line):
@@ -160,7 +179,7 @@ def present(module, dest, host, keyscan, enctype, port, aliases):
     changed = False
     msg = ""
     lines = read_known_hosts(dest)
-    found = find_host(lines, host, enctype)
+    found = find_host(lines, host, port, enctype)
     rc, key = scan_key(module, host, keyscan, enctype, port)
 
     if rc == 0:
@@ -183,12 +202,12 @@ def present(module, dest, host, keyscan, enctype, port, aliases):
     module.exit_json(changed=changed, msg=msg)
 
 
-def absent(module, dest, host):
+def absent(module, dest, host, port):
     changed = False
     msg = ""
     lines = read_known_hosts(dest)
-    found = find_host(lines, host)
-
+    found = find_host(lines, host, port)
+    
     if found != -1:
         del lines[found]
         write_known_hosts(module, dest, lines)
@@ -223,7 +242,7 @@ def main():
     if module.params['state'] == 'present':
         present(module, dest, host, keyscan, enctype, port, aliases)
     else:
-        absent(module, dest, host)
+        absent(module, dest, host, port)
 
 # this is magic, see lib/ansible/module_common.py
 #<<INCLUDE_ANSIBLE_MODULE_COMMON>>
