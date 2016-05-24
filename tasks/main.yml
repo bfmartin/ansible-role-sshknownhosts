@@ -3,7 +3,7 @@
 - name: Manage ssh_known_hosts file
   sshknownhosts:
     host: "{{ item.name }}"
-    aliases: "{{ item.aliases|join(',') }}"
+    aliases: "{{ item.aliases|join(',') if item.aliases is defined else omit }}"
     state: "{{ item.state|default(ssh_known_hosts_state) }}"
     dest: "{{ item.path|default(ssh_known_hosts_path) }}"
     enctype: "{{ item.enctype|default(ssh_known_hosts_enctype) }}"
