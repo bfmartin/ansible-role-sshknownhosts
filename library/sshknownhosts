@@ -107,9 +107,9 @@ def read_known_hosts(dest):
 # locate a host in the known hosts array.
 # return the position if found, or -1 if not found
 def find_host(lines, host, port, enctype=None):
-    
-    enc_lookup=dict(dsa='ssh-dss', rsa='ssh-rsa', ecdsa='ecdsa-sha2-nistp256')
-    
+
+    enc_lookup=dict(dsa='ssh-dss', rsa='ssh-rsa', ecdsa='ecdsa-sha2-nistp256', ed25519='ssh-ed25519')
+
     if port == "22":
         # if enctype is not defined search for any possible encryption type
         if enctype:
@@ -132,7 +132,7 @@ def find_host(lines, host, port, enctype=None):
             mre = re.compile("^\[{0}\]\:{1}[ ,]+.*? {2} ".format(host, port, enc_lookup[enctype]))
         else:
             mre = re.compile("^\[{0}\]\:{1}[ ,]+.*? (({2})) ".format(host, port, ')|('.join(enc_lookup.values())))
-    
+
     found = -1
     for lineno, cur_line in enumerate(lines):
         if mre.search(cur_line):
@@ -207,7 +207,7 @@ def absent(module, dest, host, port):
     msg = ""
     lines = read_known_hosts(dest)
     found = find_host(lines, host, port)
-    
+
     if found != -1:
         del lines[found]
         write_known_hosts(module, dest, lines)
