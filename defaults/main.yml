@@ -18,3 +18,9 @@ ssh_known_hosts_keyscan: ssh-keyscan
 #      - www2.example.com
 
 ssh_known_hosts: []
+
+ssh_known_hosts_enctype_lookup:
+  dsa: ssh-dss
+  rsa: ssh-rsa
+  ecdsa: ecdsa-sha2-nistp256
+  ed25519: ssh-ed25519
