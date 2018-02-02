@@ -10,12 +10,13 @@
     port: "{{ item.port|default(ssh_known_hosts_port) }}"
     keyscan: "{{ item.keyscan|default(ssh_known_hosts_keyscan) }}"
   with_items: "{{ ssh_known_hosts }}"
-  when: "{{ item.fingerprint is undefined }}"
+  when: item.fingerprint is undefined
 
 - name: Add lines for specified fingerprints
   lineinfile: 
     dest: "{{ item.path|default(ssh_known_hosts_path) }}"
+    create: True
     regexp: "^{{ item.name }}"
     line: "{{ ([ item.name ] + item.aliases)|join(',') if item.aliases is defined else item.name }} {{ ssh_known_hosts_enctype_lookup[item.enctype|default(ssh_known_hosts_enctype)] }} {{ item.fingerprint }}"
   with_items: "{{ ssh_known_hosts }}"
-  when: "{{ item.fingerprint is defined }}"
+  when: item.fingerprint is defined
