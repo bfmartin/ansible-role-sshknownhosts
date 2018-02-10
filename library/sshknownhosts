@@ -118,9 +118,9 @@ def find_host(lines, host, port, enctype=None):
             # host enctype ...
             # or:
             # host,alias_1,alias_2,...,alias_n enctype ...
-            mre = re.compile("^{0}[ ,]+.*? {1} ".format(host, enc_lookup[enctype]))
+            mre = re.compile("^{0}[ ,]*.*? {1} ".format(host, enc_lookup[enctype]))
         else:
-            mre = re.compile("^{0}[ ,]+.*? (({1})) ".format(host, ')|('.join(enc_lookup.values())))
+            mre = re.compile("^{0}[ ,]*.*? (({1})) ".format(host, ')|('.join(enc_lookup.values())))
     else:
         # if enctype is not defined search for any possible encryption type
         if enctype:
@@ -129,9 +129,9 @@ def find_host(lines, host, port, enctype=None):
             # [host]:port enctype ...
             # or:
             # [host]:port,alias_1,alias_2,...,alias_n enctype ...
-            mre = re.compile("^\[{0}\]\:{1}[ ,]+.*? {2} ".format(host, port, enc_lookup[enctype]))
+            mre = re.compile("^\[{0}\]\:{1}[ ,]*.*? {2} ".format(host, port, enc_lookup[enctype]))
         else:
-            mre = re.compile("^\[{0}\]\:{1}[ ,]+.*? (({2})) ".format(host, port, ')|('.join(enc_lookup.values())))
+            mre = re.compile("^\[{0}\]\:{1}[ ,]*.*? (({2})) ".format(host, port, ')|('.join(enc_lookup.values())))
 
     found = -1
     for lineno, cur_line in enumerate(lines):
