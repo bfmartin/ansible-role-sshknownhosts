@@ -5,8 +5,11 @@ ssh_known_hosts_state: present
 ssh_known_hosts_enctype: rsa
 ssh_known_hosts_port: 22
 ssh_known_hosts_keyscan: ssh-keyscan
-# import all hosts from inventory to ssh_known_hosts
+
+# add all host from inventory to ssh_known_host
 ssh_known_hosts_use_inventory: False
+# if adding from inventory, add shortname as alias
+ssh_known_hosts_use_shortnames: False
 
 #ssh_known_hosts:
 #  - name: example.com

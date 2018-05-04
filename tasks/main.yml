@@ -4,8 +4,21 @@
 - name: Add all hosts from inventory to ssh_known_hosts
   set_fact:
     ssh_known_hosts: "{{ ssh_known_hosts + [{ 'name': item }] }}"
-  with_items: groups['all']
-  when: ssh_known_hosts_use_inventory and item not in ssh_known_hosts
+  with_items: "{{ groups['all'] }}"
+  when: ssh_known_hosts_use_inventory and
+          not ssh_known_hosts_use_shortnames and
+          item not in ssh_known_hosts|map(attribute='name')
+  run_once: true
+ 
+- name: Add all hosts from inventory to ssh_known_hosts with shortname alias
+  set_fact:
+    ssh_known_hosts: "{{ ssh_known_hosts + [{ 'name': item,
+                      'aliases': [item.split('.')[0]] }] }}"
+  with_items: "{{ groups['all'] }}"
+  when: ssh_known_hosts_use_inventory and
+          ssh_known_hosts_use_shortnames and
+          item not in ssh_known_hosts|map(attribute='name')
+  run_once: true
 
 - name: Manage ssh_known_hosts file
   sshknownhosts:
