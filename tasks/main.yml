@@ -1,5 +1,12 @@
 ---
 # Where the rubber meets the road. stuff gets done
+
+- name: Add all hosts from inventory to ssh_known_hosts
+  set_fact:
+    ssh_known_hosts: "{{ ssh_known_hosts + [{ 'name': item }] }}"
+  with_items: groups['all']
+  when: ssh_known_hosts_use_inventory and item not in ssh_known_hosts
+
 - name: Manage ssh_known_hosts file
   sshknownhosts:
     host: "{{ item.name }}"
