@@ -9,7 +9,7 @@
           not ssh_known_hosts_use_shortnames and
           item not in ssh_known_hosts|map(attribute='name')
   run_once: true
- 
+
 - name: Add all hosts from inventory to ssh_known_hosts with shortname alias
   set_fact:
     ssh_known_hosts: "{{ ssh_known_hosts + [{ 'name': item,
@@ -33,7 +33,7 @@
   when: item.fingerprint is undefined
 
 - name: Add lines for specified fingerprints
-  lineinfile: 
+  lineinfile:
     dest: "{{ item.path|default(ssh_known_hosts_path) }}"
     create: True
     regexp: "^{{ item.name }}"
