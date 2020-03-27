@@ -11,16 +11,16 @@ ssh_known_hosts_use_inventory: False
 # if adding from inventory, add shortname as alias
 ssh_known_hosts_use_shortnames: False
 
-#ssh_known_hosts:
-#  - name: example.com
-#    state: present
-#    dest: /etc/ssh/ssh_known_hosts
-#    enctype: rsa
-#    port: 22
-#    keyscan: ssh-keyscan
-#    aliases:
-#      - www.example.com
-#      - www2.example.com
+# ssh_known_hosts:
+#   - name: example.com
+#     state: present
+#     dest: /etc/ssh/ssh_known_hosts
+#     enctype: rsa
+#     port: 22
+#     keyscan: ssh-keyscan
+#     aliases:
+#       - www.example.com
+#       - www2.example.com
 
 ssh_known_hosts: []
 
