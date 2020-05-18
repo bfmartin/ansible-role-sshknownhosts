@@ -96,7 +96,7 @@ Examples:
 # empty array
 def read_known_hosts(dest):
     if os.path.exists(dest):
-        f = open(dest, 'rb')
+        f = open(dest, 'r')
         lines = f.readlines()
         f.close()
     else:
@@ -144,7 +144,7 @@ def find_host(lines, host, port, enctype=None):
 # changes are performed
 def write_known_hosts(module, dest, lines):
     if not module.check_mode:
-        of = open(dest, 'wb')
+        of = open(dest, 'w')
         of.writelines(lines)
         of.close
 
@@ -171,7 +171,7 @@ def scan_key(module, host, keyscan, enctype, port):
 def add_aliases(key, aliases):
     if aliases == '':
         return key
-    parts = string.split(key, ' ', 1)  # split at first space (into 2 parts)
+    parts = key.split(' ', 1)  # split at first space (into 2 parts)
     return parts[0] + ',' + aliases + ' ' + parts[1]
 
 
